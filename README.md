@@ -1,5 +1,7 @@
 # Calendly
 
+### Store time in UTC
+
 ### Folder structure
     / src
         / application
