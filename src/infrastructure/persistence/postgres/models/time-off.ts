@@ -1,10 +1,10 @@
 import { plainToClass } from "class-transformer";
 import { TimeOffEntity } from "src/domain/entities/time-off.entity";
-import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Event } from "./event";
 
 @Entity()
-export class TimeOff extends BaseEntity {
+export class TimeOff {
     @PrimaryGeneratedColumn('increment')
     id: string;
 

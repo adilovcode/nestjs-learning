@@ -24,9 +24,8 @@ export class WorkingDayRepository implements IWorkingDayRepository {
     async fetchByEventId(eventId: string): Promise<WorkingDayEntity[]> {
         return (await this._repository.find({ where: { eventId } })).map(workingDay => workingDay.toDomainEntity());
     }
-    fetchWorkingDayByWeekDayAndEventId(eventId: string, day: number): Promise<WorkingDayEntity> {
-        console.log(eventId, day);
-        
-        throw new Error("Method not implemented.");
+    
+    async fetchByWeekDayAndEventId(eventId: string, day: number): Promise<WorkingDayEntity> {
+        return (await this._repository.findOneOrFail({where: { eventId, day }})).toDomainEntity();
     }
 }

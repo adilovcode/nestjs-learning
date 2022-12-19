@@ -13,11 +13,14 @@ import { WorkingDay } from './persistence/postgres/models/working-day';
 import { IDatabaseTransaction } from 'src/application/contracts/database-transaction.contract';
 import { QueryRunnerTransaction } from './persistence/postgres/utils/query-runner-transaction.utils';
 import { ClsModule } from 'nestjs-cls';
+import { IBookingRepository } from 'src/application/repositories/bookings.repository';
+import { BookingRepository } from './persistence/postgres/repositories/booking.repository';
+import { Booking } from './persistence/postgres/models/booking';
 
 @Module({
     imports: [
         TypeOrmModule.forRoot(dataSourceOption),
-        TypeOrmModule.forFeature([Event, TimeOff, WorkingDay]),
+        TypeOrmModule.forFeature([Event, TimeOff, WorkingDay, Booking]),
         ClsModule.forRoot({
             global: true,
             middleware: { mount: true },
@@ -37,6 +40,10 @@ import { ClsModule } from 'nestjs-cls';
             useClass: TimeOffRepository
         },
         {
+            provide: IBookingRepository,
+            useClass: BookingRepository
+        },
+        {
             provide: IDatabaseTransaction,
             useClass: QueryRunnerTransaction
         },
@@ -46,6 +53,7 @@ import { ClsModule } from 'nestjs-cls';
         IEventsRepository,
         IWorkingDayRepository,
         ITimeOffRepository,
+        IBookingRepository,
         IDatabaseTransaction,
         QueryRunnerTransaction
     ]

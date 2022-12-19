@@ -25,9 +25,6 @@ export class CreateEventDto {
     @IsInt()
     acceptsPerSlot: number = 1;
 
-    @IsInt()
-    slotDuration: number;
-
     @IsArray()
     workingDays: number[];
 

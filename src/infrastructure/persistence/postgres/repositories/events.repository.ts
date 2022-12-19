@@ -4,20 +4,18 @@ import { Repository } from "typeorm";
 import { Event } from "../models/event";
 import { InjectRepository } from '@nestjs/typeorm';
 import { NotFoundException } from "@nestjs/common";
-import { QueryRunnerTransaction } from "../utils/query-runner-transaction.utils";
 
 export class EventsRepository implements IEventsRepository {
 
     constructor(
         @InjectRepository(Event)
         private readonly _repository: Repository<Event>,
-        private readonly queryRunner: QueryRunnerTransaction
     ) {}
 
     async create(eventEntity: EventEntity): Promise<EventEntity> {
         const event = this._repository.create(eventEntity);
         
-        return (await this.queryRunner._queryRunner.manager.save(event)).toDomainEntity();
+        return (await this._repository.save(event)).toDomainEntity();
     }
     
     async update(eventEntity: EventEntity): Promise<EventEntity> {

@@ -29,7 +29,7 @@ export class WorkingDaysGenerator {
             
                 if (getDay(addDays(new Date(), i)) == workingDay.day) {
                     availableWorkingDays.push({
-                        date: addDays(new Date(), i).toString(),
+                        date: addDays(new Date(), i).toDateString(),
                         startTime: workingDay.startTime,
                         endTime: workingDay.endTime
                     });

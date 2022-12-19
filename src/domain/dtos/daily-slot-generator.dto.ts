@@ -1,16 +1,19 @@
+import { BookingEntity } from "../entities/booking.entities";
 import { TimeOffEntity } from "../entities/time-off.entity";
 import { Minute } from "../value-objects";
 
 export class DailySlotsGeneratorDto {
-    startTime: string;
+    readonly startTime: string;
 
-    endTime: string;
+    readonly endTime: string;
     
-    duration: Minute;
+    readonly duration: Minute;
 
-    timeOffs: TimeOffEntity[];
-    // private readonly array $bookings,
-    acceptsPerSlot: number;
+    readonly timeOffs: TimeOffEntity[];
+    
+    readonly bookings: BookingEntity[];
+    
+    readonly acceptsPerSlot: number;
 
-    isToday: boolean = false
+    readonly isToday: boolean = false
 }

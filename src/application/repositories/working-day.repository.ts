@@ -5,5 +5,5 @@ export abstract class IWorkingDayRepository {
 
     abstract fetchByEventId(eventId: string): Promise<WorkingDayEntity[]>;
 
-    abstract fetchWorkingDayByWeekDayAndEventId(eventId: string, day: number): Promise<WorkingDayEntity>;
+    abstract fetchByWeekDayAndEventId(eventId: string, day: number): Promise<WorkingDayEntity>;
 }

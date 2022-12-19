@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { CreateEventDto } from "src/domain/dtos/create-event.dto";
 import { TimeOff } from "src/domain/value-objects/time-off";
 import { EventFactory } from "../factories/event.factory";
@@ -44,7 +44,7 @@ export class CreateEventUseCase {
         this._createEventDto.timeOffs.forEach((oTimeOff, oI) => {
             this._createEventDto.timeOffs.forEach((tTimeOff, oT) => {
                 if (oI !== oT && this.doesTimeOffsHaveConflict(oTimeOff, tTimeOff)) {
-                    throw "Time-off has conflicts";
+                    throw new HttpException("Time-off has conflicts", HttpStatus.BAD_REQUEST);
                 }
             }); 
         });
