@@ -20,7 +20,7 @@ export class Booking {
     @Column()
     email: string;
     
-    @Column()
+    @Column({ type: 'timestamp' })
     bookingDate: string;
 
     toDomainEntity(): BookingEntity {

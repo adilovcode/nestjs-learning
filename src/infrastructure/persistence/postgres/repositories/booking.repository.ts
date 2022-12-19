@@ -1,7 +1,8 @@
 import { InjectRepository } from "@nestjs/typeorm";
+import { addDays, format } from "date-fns";
 import { IBookingRepository } from "src/application/repositories/bookings.repository";
 import { BookingEntity } from "src/domain/entities/booking.entities";
-import { Repository } from "typeorm";
+import { Between, Repository } from "typeorm";
 import { Booking } from "../models/booking";
 
 export class BookingRepository implements IBookingRepository {
@@ -15,9 +16,15 @@ export class BookingRepository implements IBookingRepository {
     }
 
     async fetchByDateEventId(eventId: string, date: Date): Promise<BookingEntity[]> {
+        const dateAfter = format(date, 'yyyy-MM-dd');
+        const dateBefore = format(addDays(date, 1), 'yyyy-MM-dd');
+
         return (await this._repository.find({
-            where: {eventId, bookingDate: date.toString()}
-        })).map(booking => booking.toDomainEntity());
+            where: {
+                bookingDate: Between(dateAfter, dateBefore),
+                eventId
+            }
+        })).map(booking => booking.toDomainEntity())
     }
     
     async store(booking: BookingEntity): Promise<void> {

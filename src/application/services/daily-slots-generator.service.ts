@@ -4,6 +4,7 @@ import { Slot } from "src/domain/value-objects";
 import { Hour } from "src/domain/value-objects/hour";
 import { SlotsGenerator } from "./slots-generator.service";
 import { addMinutes, format } from 'date-fns';
+import { formatToTime } from "../helpers";
 
 @Injectable()
 export class DailySlotsGenerator {
@@ -56,8 +57,8 @@ export class DailySlotsGenerator {
         const separator = '-';
 
         const mutatedData = this.dailySlotsGeneratorDto.bookings.map(booking => {
-            const startTime = format(new Date(booking.bookingDate), 'HH:mm');
-            const endTime = format(addMinutes(new Date(booking.bookingDate), this.dailySlotsGeneratorDto.duration), 'HH:mm');
+            const startTime = formatToTime(new Date(booking.bookingDate));
+            const endTime = formatToTime(addMinutes(new Date(booking.bookingDate), this.dailySlotsGeneratorDto.duration));
 
             return startTime + separator + endTime;
         });

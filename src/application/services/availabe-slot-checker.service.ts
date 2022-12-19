@@ -1,8 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { addDays, format, getDay } from "date-fns";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { addDays, getDay } from "date-fns";
 import { DailySlotsGeneratorDto } from "src/domain/dtos/daily-slot-generator.dto";
 import { BookingEntity } from "src/domain/entities/booking.entities";
 import { EventEntity } from "src/domain/entities/event.entity";
+import { formatToTime } from "../helpers";
 import { IBookingRepository } from "../repositories/bookings.repository";
 import { ITimeOffRepository } from "../repositories/time-off.repository";
 import { IWorkingDayRepository } from "../repositories/working-day.repository";
@@ -27,7 +28,7 @@ export class AvailableSlotChecker {
         );
 
         if (!workingDay) {
-            throw 'Not working day';
+            throw new HttpException('Not working day', HttpStatus.BAD_REQUEST);
         }
 
         const bookings = await this.bookingRepository.fetchByDateEventId(event.id, bookingDate);
@@ -45,14 +46,13 @@ export class AvailableSlotChecker {
 
         const slots = this.dailySlotGenerator.generate(dailySlotGeneratorDto);
 
-        return slots.indexOf(format(bookingDate, 'HH:mm')) > -1;
+        return slots.indexOf(formatToTime(bookingDate)) > -1;
     }
 
     private validateIfiIEventDateRange(bookableInAdvance: number, bookingDate: Date): void {
         if (!this.isInRangeOfHours(new Date(), addDays(new Date(), bookableInAdvance), bookingDate)) {
-            throw new Error("Out of event date range");
+            throw new HttpException("Out of event date range", HttpStatus.BAD_REQUEST);
         }
-
     }
 
     private isInRangeOfHours(startTime: Date, endTime: Date, checkingTime: Date): boolean {
